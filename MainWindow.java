@@ -31,16 +31,17 @@ import java.io.File;
 
 
 
-// black, blue, cyan, darkGray, gray, green, lightGray,
-// magenta, orange, pink, red, white, yellow.
+// black, blue, cyan, darkGray, gray, green,
+// lightGray, magenta, orange, pink, red,
+// white, yellow.
 
 
 
 public class MainWindow extends JFrame implements
-                                WindowListener,
-                                WindowFocusListener,
-                                WindowStateListener,
-                                ActionListener
+                              WindowListener,
+                              WindowFocusListener,
+                              WindowStateListener,
+                              ActionListener
   {
   // It needs to have a version UID since it's
   // serializable.
@@ -62,19 +63,21 @@ public class MainWindow extends JFrame implements
 
 
 
-  public MainWindow( MainApp useApp, String showText )
+  public MainWindow( MainApp useApp,
+                                 String showText )
     {
     super( showText );
 
     mApp = useApp;
-    uiThreadName = Thread.currentThread().getName();
+    uiThreadName = Thread.currentThread().
+                                       getName();
 
     mainFont = new Font( Font.MONOSPACED,
                          Font.PLAIN,
                          45 );
 
     setDefaultCloseOperation( WindowConstants.
-                                      EXIT_ON_CLOSE );
+                                  EXIT_ON_CLOSE );
 
     setSize( 1000, 500 );
     addComponents( getContentPane() );
@@ -186,13 +189,14 @@ public class MainWindow extends JFrame implements
     pane.setLayout( new LayoutSimpleVertical());
 
     mainPanel = new JPanel();
-    mainPanel.setLayout( new LayoutSimpleVertical());
+    mainPanel.setLayout( new
+                          LayoutSimpleVertical());
     mainPanel.setBackground( Color.black );
-    // Setting it to FixedHeightMax means this component is
-    // stretchable.
+    // Setting it to FixedHeightMax means this
+    // component is stretchable.
     // new Dimension( Width, Height );
-    mainPanel.setPreferredSize( new Dimension(
-                   1, LayoutSimpleVertical.FixedHeightMax ));
+    mainPanel.setPreferredSize( new Dimension( 1,
+           LayoutSimpleVertical.FixedHeightMax ));
 
     pane.add( mainPanel );
     addStatusTextPane();
@@ -219,12 +223,12 @@ public class MainWindow extends JFrame implements
       return;
 
     String thisThreadName = Thread.currentThread().
-                                           getName();
+                                        getName();
 
     if( !uiThreadName.equals( thisThreadName ))
       {
       String showWarn = "showStatusA() is being" +
-                " called from the wrong thread.\n\n";
+             " called from the wrong thread.\n\n";
 
       statusTextArea.setText( showWarn );
       return;
@@ -255,27 +259,28 @@ public class MainWindow extends JFrame implements
     statusTextArea.setWrapStyleWord( true );
     statusTextArea.setBackground( Color.black );
     statusTextArea.setForeground( Color.white );
-    statusTextArea.setSelectedTextColor( Color.white );
-    statusTextArea.setSelectionColor( Color.darkGray );
-    // black, blue, cyan, darkGray, gray, green, lightGray,
-    // magenta, orange, pink, red, white, yellow.
+    statusTextArea.setSelectedTextColor(
+                                  Color.white );
+    statusTextArea.setSelectionColor(
+                                  Color.darkGray );
+    // black, blue, cyan, darkGray, gray, green,
+    // lightGray, magenta, orange, pink, red,
+    // white, yellow.
 
     CaretWide cWide = new CaretWide();
     statusTextArea.setCaret( cWide );
     statusTextArea.setCaretColor( Color.white );
 
     JScrollPane scrollPane1 = new JScrollPane(
-                                     statusTextArea );
+                                 statusTextArea );
 
     scrollPane1.setVerticalScrollBarPolicy(
-             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+          JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
-    // Setting it to FixedHeightMax means this component is
-    // stretchable.
     // new Dimension( Width, Height );
 
     scrollPane1.setPreferredSize( new Dimension(
-                   1, LayoutSimpleVertical.FixedHeightMax ));
+        1, LayoutSimpleVertical.FixedHeightMax ));
 
     // mainPanel.add( statusTextArea );
     mainPanel.add( scrollPane1 );
@@ -298,9 +303,9 @@ public class MainWindow extends JFrame implements
 
     JMenuItem menuItem;
 
-    menuItem = new JMenuItem( "Not set yet" );
-    menuItem.setMnemonic( KeyEvent.VK_G );
-    menuItem.setActionCommand( "FileShowGraph" );
+    menuItem = new JMenuItem( "Test" );
+    menuItem.setMnemonic( KeyEvent.VK_T );
+    menuItem.setActionCommand( "FileTest" );
     menuItem.addActionListener( this );
     menuItem.setForeground( Color.white );
     menuItem.setBackground( Color.black );
@@ -325,7 +330,6 @@ public class MainWindow extends JFrame implements
     menuItem.setFont( mainFont );
     fileMenu.add( menuItem );
 
-/*
     ///////////////////////
     // Edit Menu:
     JMenu editMenu = new JMenu( "Edit" );
@@ -361,12 +365,14 @@ public class MainWindow extends JFrame implements
     menuItem.addActionListener( this );
     helpMenu.add( menuItem );
 
+/*
     menuItem = new JMenuItem( "Show Non-ASCII" );
     menuItem.setMnemonic( KeyEvent.VK_A );
     menuItem.setForeground( Color.white );
     menuItem.setBackground( Color.black );
     menuItem.setFont( mainFont );
-    menuItem.setActionCommand( "HelpShowNonASCII" );
+    menuItem.setActionCommand(
+                             "HelpShowNonASCII" );
     menuItem.addActionListener( this );
     helpMenu.add( menuItem );
 */
@@ -390,15 +396,25 @@ public class MainWindow extends JFrame implements
       return;
       }
 
-    // showStatusAsync( "ActionEvent Command is: " + command );
+    // showStatusAsync( "ActionEvent Command is: "
+    //                                + command );
 
     //////////////
     // File Menu:
-    if( command == "FileShowGraph" )
+    if( command == "FileTest" )
       {
-      // graphWin = new GraphWindow( mApp, "Graph Window" );
-      // graphWin.initialize();
+      try
+      {
+      TestArith arith = new TestArith( mApp );
+      arith.mainTest();
 
+      }
+      catch( Exception e )
+        {
+        showStatusAsync(
+             "Exception in TestArith." );
+        showStatusAsync( e.getMessage() );
+        }
       }
 
     if( command == "FileCancel" )
@@ -414,7 +430,6 @@ public class MainWindow extends JFrame implements
       }
 
 
-/*
     /////////////
     // Edit Menu:
     if( command == "EditCopy" )
@@ -432,6 +447,7 @@ public class MainWindow extends JFrame implements
       return;
       }
 
+/*
     if( command == "HelpShowNonASCII" )
       {
       showNonAsciiCharacters();
@@ -441,7 +457,8 @@ public class MainWindow extends JFrame implements
     }
     catch( Exception e )
       {
-      showStatusAsync( "Exception in actionPerformed()." );
+      showStatusAsync(
+             "Exception in actionPerformed()." );
       showStatusAsync( e.getMessage() );
       }
     }
@@ -459,7 +476,8 @@ public class MainWindow extends JFrame implements
     }
     catch( Exception e )
       {
-      showStatusAsync( "Exception in editCopy()." );
+      showStatusAsync(
+                    "Exception in editCopy()." );
       showStatusAsync( e.getMessage() );
       }
     }
@@ -469,66 +487,9 @@ public class MainWindow extends JFrame implements
   private void showAboutBox()
     {
     JOptionPane.showMessageDialog( this,
-                 "Programming by Eric Chauvin.  Version date: " + MainApp.versionDate );
+     "Programming by Eric Chauvin.  Version date: "
+     + MainApp.versionDate );
 
-    }
-
-
-
-  private void showNonAsciiCharacters()
-    {
-    /*
-
-    Symbols:
-        General Punctuation (2000206F)
-        Superscripts and Subscripts (2070209F)
-        Currency Symbols (20A020CF)
-        Combining Diacritical Marks for Symbols (20D020FF)
-        Letterlike Symbols (2100214F)
-        Number Forms (2150218F)
-        Arrows (219021FF)
-        Mathematical Operators (220022FF)
-        Miscellaneous Technical (230023FF)
-        Control Pictures (2400243F)
-        Optical Character Recognition (2440245F)
-        Enclosed Alphanumerics (246024FF)
-        Box Drawing (2500257F)
-        Block Elements (2580259F)
-        Geometric Shapes (25A025FF)
-        Miscellaneous Symbols (260026FF)
-        Dingbats (270027BF)
-        Miscellaneous Mathematical Symbols-A (27C027EF)
-        Supplemental Arrows-A (27F027FF)
-        Braille Patterns (280028FF)
-        Supplemental Arrows-B (2900297F)
-        Miscellaneous Mathematical Symbols-B (298029FF)
-        Supplemental Mathematical Operators (2A002AFF)
-        Miscellaneous Symbols and Arrows (2B002BFF)
-
-    // See the MarkersDelimiters.cs file.
-    // Don't exclude any characters in the Basic
-    // Multilingual Plane except these Dingbat characters
-    // which are used as markers or delimiters.
-
-    //    Dingbats (270027BF)
-
-    // for( int Count = 0x2700; Count < 0x27BF; Count++ )
-      // ShowStatusAsync( Count.ToString( "X2" ) + ") " + Char.ToString( (char)Count ));
-
-    // for( int Count = 128; Count < 256; Count++ )
-      // ShowStatusAsync( "      case (int)'" + Char.ToString( (char)Count ) + "': return " + Count.ToString( "X4" ) + ";" );
-
-
-    // for( int Count = 32; Count < 256; Count++ )
-      // ShowStatusAsync( "    CharacterArray[" + Count.ToString() + "] = '" + Char.ToString( (char)Count ) + "';  //  0x" + Count.ToString( "X2" ) );
-
-     // &#147;
-
-    // ShowStatusAsync( " " );
-    */
-
-    int getVal = 191;
-    showStatusAsync( "Character: " + (char)getVal );
     }
 
 
